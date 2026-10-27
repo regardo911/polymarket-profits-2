@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install the book's three pins (nothing else)
+        run: pip install -r requirements.txt
+      - name: Lint
+        run: pip install pyflakes==3.2.0 && python -m pyflakes polymarket-bots tests
+      - name: Tests (offline), and refuse a run of zero tests
+        run: |
+          python -m unittest discover tests 2>&1 | tee test.out
+          grep -Eq "^Ran [1-9][0-9]* tests?" test.out
+          tail -1 test.out | grep -q "^OK"
+      - name: Commands start without keys
+        run: |
+          cd polymarket-bots
+          for f in *.py; do [ "$f" = config.py ] || [ "$f" = utils.py ] || python "$f" --help > /dev/null; done
+          python audit.py

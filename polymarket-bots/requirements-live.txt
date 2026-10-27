@@ -1,0 +1,9 @@
+# Only for live_pair.py. Install into its OWN virtual environment:
+#   python3 -m venv .venv-live && source .venv-live/bin/activate
+#   pip install -r requirements-live.txt
+# polymarket-client 0.14.0 needs websockets<16, and the book pins
+# websockets==17.3 for stream.py, so the two can't share one environment.
+# live_pair.py needs requests and these SDKs, nothing else.
+requests==2.34.2
+polymarket-client==0.14.0   # official SDK, outside the US (SecureClient), Python 3.11+
+polymarket-us==2.4.1        # Polymarket US, Python 3.10+

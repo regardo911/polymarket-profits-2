@@ -1,0 +1,8 @@
+# Python 3.11+
+requests==2.34.2
+websockets==17.3
+anthropic==2.3.0
+# Live trading later (not used by the paper bots):
+#   polymarket-client   official SDK, outside the US
+#   polymarket-us       Polymarket US
+#   (both pinned in polymarket-bots/requirements-live.txt)
